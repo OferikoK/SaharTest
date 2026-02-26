@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>🏆 מבחן מחוננים - מעקב תרגול</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;900&display=swap');
+
+  :root {
+    --bs-dark: #1a0a2e;
+    --bs-purple: #2d1b69;
+    --bs-blue: #1e3a5f;
+    --bs-yellow: #ffd700;
+    --bs-orange: #ff8c00;
+    --bs-red: #ff3b3b;
+    --bs-green: #00e676;
+    --bs-cyan: #00e5ff;
+    --bs-pink: #ff4081;
+    --bs-glow: rgba(255, 215, 0, 0.4);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Rubik', sans-serif;
+    background: linear-gradient(135deg, var(--bs-dark) 0%, #0d0221 50%, #1a0533 100%);
+    min-height: 100vh;
+    color: #fff;
+    overflow-x: hidden;
+  }
+
+  /* Animated stars background */
+  .stars {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0;
+    background: radial-gradient(2px 2px at 20% 30%, #fff3, transparent),
+                radial-gradient(2px 2px at 40% 70%, #fff2, transparent),
+                radial-gradient(1px 1px at 60% 20%, #fff4, transparent),
+                radial-gradient(1px 1px at 80% 50%, #fff3, transparent),
+                radial-gradient(2px 2px at 10% 80%, #fff2, transparent),
+                radial-gradient(1px 1px at 90% 10%, #fff3, transparent),
+                radial-gradient(2px 2px at 50% 50%, #fff1, transparent),
+                radial-gradient(1px 1px at 30% 90%, #fff2, transparent);
+    animation: twinkle 4s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle { from { opacity: 0.5; } to { opacity: 1; } }
+
+  .app { position: relative; z-index: 1; max-width: 500px; margin: 0 auto; padding: 16px; padding-bottom: 100px; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 20px 10px;
+    margin-bottom: 16px;
+    background: linear-gradient(180deg, rgba(45,27,105,0.8), rgba(30,58,95,0.6));
+    border-radius: 20px;
+    border: 2px solid rgba(255,215,0,0.3);
+    box-shadow: 0 0 30px rgba(255,215,0,0.1);
+  }
+  .header h1 {
+    font-size: 1.6em;
+    font-weight: 900;
+    background: linear-gradient(180deg, var(--bs-yellow), var(--bs-orange));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    margin-bottom: 4px;
+  }
+  .header .subtitle {
+    font-size: 0.85em;
+    color: var(--bs-cyan);
+    font-weight: 600;
+  }
+
+  /* Stats Bar */
+  .stats-bar {
+    display: flex;
+    justify-content: space-around;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .stat-box {
+    flex: 1;
+    background: linear-gradient(180deg, rgba(45,27,105,0.9), rgba(26,10,46,0.9));
+    border-radius: 16px;
+    padding: 12px 8px;
+    text-align: center;
+    border: 2px solid rgba(255,215,0,0.2);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+  .stat-box .stat-icon { font-size: 1.5em; margin-bottom: 4px; }
+  .stat-box .stat-value {
+    font-size: 1.4em; font-weight: 900;
+    background: linear-gradient(180deg, #fff, var(--bs-cyan));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .stat-box .stat-label { font-size: 0.65em; color: #aaa; margin-top: 2px; }
+
+  /* XP Progress bar */
+  .xp-section {
+    background: linear-gradient(180deg, rgba(45,27,105,0.8), rgba(30,58,95,0.5));
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    border: 2px solid rgba(0,229,255,0.2);
+  }
+  .xp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .xp-label { font-size: 0.8em; font-weight: 700; color: var(--bs-cyan); }
+  .xp-value { font-size: 0.8em; font-weight: 700; color: var(--bs-yellow); }
+  .xp-bar-bg {
+    height: 20px; border-radius: 10px;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,215,0,0.2);
+    overflow: hidden;
+    position: relative;
+  }
+  .xp-bar-fill {
+    height: 100%; border-radius: 10px;
+    background: linear-gradient(90deg, var(--bs-green), var(--bs-cyan), var(--bs-yellow));
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 15px rgba(0,230,118,0.5);
+    position: relative;
+  }
+  .xp-bar-fill::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent);
+    border-radius: 10px;
+  }
+  .xp-next-prize { font-size: 0.7em; color: #aaa; margin-top: 6px; text-align: center; }
+
+  /* Prize showcase */
+  .prizes-section {
+    background: linear-gradient(180deg, rgba(45,27,105,0.6), rgba(26,10,46,0.6));
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 16px;
+    border: 2px solid rgba(255,64,129,0.2);
+  }
+  .prizes-title {
+    font-size: 0.9em; font-weight: 700; color: var(--bs-pink);
+    text-align: center; margin-bottom: 10px;
+  }
+  .prizes-list { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+  .prize-chip {
+    background: linear-gradient(135deg, rgba(255,64,129,0.2), rgba(255,140,0,0.2));
+    border: 1px solid rgba(255,215,0,0.3);
+    border-radius: 12px;
+    padding: 6px 10px;
+    font-size: 0.75em;
+    font-weight: 600;
+    display: flex; align-items: center; gap: 4px;
+    animation: chipGlow 2s ease-in-out infinite alternate;
+  }
+  @keyframes chipGlow {
+    from { box-shadow: 0 0 5px rgba(255,64,129,0.2); }
+    to { box-shadow: 0 0 15px rgba(255,64,129,0.4); }
+  }
+  .prize-chip.claimed { background: linear-gradient(135deg, rgba(0,230,118,0.3), rgba(0,229,255,0.2)); border-color: var(--bs-green); }
+
+  /* Units list */
+  .units-title {
+    font-size: 1em; font-weight: 900;
+    color: var(--bs-yellow);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .unit-card {
+    background: linear-gradient(180deg, rgba(45,27,105,0.7), rgba(30,58,95,0.5));
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border: 2px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    -webkit-user-select: none; user-select: none;
+  }
+  .unit-card:active { transform: scale(0.97); }
+  .unit-card.done {
+    border-color: rgba(0,230,118,0.4);
+    background: linear-gradient(180deg, rgba(0,100,50,0.3), rgba(0,60,30,0.3));
+    opacity: 0.7;
+  }
+  .unit-num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--bs-purple), var(--bs-blue));
+    border: 2px solid var(--bs-yellow);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 0.85em;
+    flex-shrink: 0;
+    box-shadow: 0 0 10px var(--bs-glow);
+  }
+  .unit-card.done .unit-num {
+    background: linear-gradient(135deg, #004d25, #006633);
+    border-color: var(--bs-green);
+    box-shadow: 0 0 10px rgba(0,230,118,0.3);
+  }
+  .unit-name { flex: 1; font-size: 0.8em; font-weight: 600; line-height: 1.3; }
+  .unit-status { font-size: 1.3em; flex-shrink: 0; }
+  .unit-pts {
+    font-size: 0.65em; font-weight: 700;
+    color: var(--bs-yellow);
+    background: rgba(255,215,0,0.15);
+    padding: 2px 8px; border-radius: 8px;
+    flex-shrink: 0;
+  }
+  .unit-card.done .unit-pts { color: var(--bs-green); background: rgba(0,230,118,0.15); }
+
+  /* Confetti & particles */
+  .particle-container {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 1000;
+  }
+  .particle {
+    position: absolute;
+    border-radius: 3px;
+    animation: particleFall linear forwards;
+  }
+  @keyframes particleFall {
+    0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+    100% { opacity: 0; transform: translateY(100vh) rotate(720deg) scale(0.3); }
+  }
+
+  /* Points popup */
+  .points-popup {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    text-align: center;
+    pointer-events: none;
+    animation: popupAnim 1.5s ease-out forwards;
+  }
+  @keyframes popupAnim {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+    20% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+    40% { transform: translate(-50%, -50%) scale(1); }
+    80% { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, -70%) scale(0.8); }
+  }
+  .points-popup .pts-text {
+    font-size: 3em; font-weight: 900;
+    background: linear-gradient(180deg, var(--bs-yellow), var(--bs-orange));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.7));
+  }
+  .points-popup .pts-label {
+    font-size: 1.2em; color: #fff; font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+  }
+
+  /* Prize modal */
+  .modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    z-index: 3000;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal-box {
+    background: linear-gradient(180deg, #2d1b69, #1a0a2e);
+    border-radius: 24px;
+    padding: 30px 24px;
+    text-align: center;
+    border: 3px solid var(--bs-yellow);
+    box-shadow: 0 0 60px var(--bs-glow), 0 0 120px rgba(255,215,0,0.2);
+    max-width: 340px;
+    width: 100%;
+    animation: modalPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  @keyframes modalPop {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .modal-box .trophy { font-size: 4em; margin-bottom: 10px; animation: bounce 1s ease infinite; }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .modal-box h2 {
+    font-size: 1.4em; font-weight: 900;
+    background: linear-gradient(180deg, var(--bs-yellow), var(--bs-orange));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .modal-box .prize-reveal {
+    font-size: 1.1em; color: #fff; font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .modal-box .prize-name {
+    font-size: 1.5em; font-weight: 900;
+    color: var(--bs-cyan);
+    margin-bottom: 16px;
+    text-shadow: 0 0 20px rgba(0,229,255,0.5);
+  }
+  .modal-box .prize-icon { font-size: 3em; margin-bottom: 16px; }
+  .modal-btn {
+    background: linear-gradient(180deg, var(--bs-yellow), var(--bs-orange));
+    color: #1a0a2e;
+    border: none; border-radius: 14px;
+    padding: 12px 32px;
+    font-family: 'Rubik', sans-serif;
+    font-size: 1em; font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255,215,0,0.4);
+    transition: transform 0.2s;
+  }
+  .modal-btn:active { transform: scale(0.95); }
+
+  /* Reset button */
+  .reset-section { text-align: center; margin-top: 30px; padding-bottom: 20px; }
+  .reset-btn {
+    background: rgba(255,59,59,0.2);
+    color: var(--bs-red);
+    border: 1px solid rgba(255,59,59,0.3);
+    border-radius: 10px;
+    padding: 8px 20px;
+    font-family: 'Rubik', sans-serif;
+    font-size: 0.75em; font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* Undo button */
+  .undo-section { text-align: center; margin-top: 10px; }
+  .undo-btn {
+    background: rgba(255,140,0,0.2);
+    color: var(--bs-orange);
+    border: 1px solid rgba(255,140,0,0.3);
+    border-radius: 10px;
+    padding: 6px 16px;
+    font-family: 'Rubik', sans-serif;
+    font-size: 0.7em; font-weight: 600;
+    cursor: pointer;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="stars"></div>
+<div class="particle-container" id="particles"></div>
+<div class="app" id="app"></div>
+
+<script>
+// ============ DATA ============
+const ALL_UNITS = [
+  "בעיות מילוליות בלבד",
+  "הבנת הנקרא וידע כללי בלבד",
+  "מבחן לדוגמא יום א",
+  "מבחן לדוגמא יום ג",
+  "מבחן לדוגמא יום ד",
+  "מבחן לדוגמא יום ה",
+  "מבחן לדוגמא יום ו",
+  "מבחן מחוננים של קלאוד 3",
+  "מבחן מחוננים של קלאוד 4",
+  "מבחן מחוננים של קלאוד 5",
+  "מבחן מחוננים של קלאוד 6",
+  "מבחן מחוננים של קלאוד 7",
+  "מבחן מלא לדוגמא יום ב",
+  "מבחן מלא לדוגמא יום ד",
+  "מבחן מלא לדוגמא קלאוד יום ו",
+  "מבחן מלא לדוגמא קלאוד יום ח",
+  "קשרים מילוליים בלבד",
+  "תרגול רצפים",
+  "תרגילי סדרות בלבד"
+];
+
+const PRIZES = [
+  { name: "ממתק", icon: "🍬" },
+  { name: "צעצוע", icon: "🧸" },
+  { name: "חצי שעה מסך בשבת", icon: "📺" },
+  { name: "טאבלט חצי שעה באמצע שבוע", icon: "📱" },
+  { name: '15 ש"ח לקאשקאש', icon: "💰" }
+];
+
+const PTS_PER_UNIT = 10;
+const PTS_PER_PRIZE = 50;
+
+// ============ STATE ============
+function loadState() {
+  try {
+    const saved = localStorage.getItem('gifted_tracker');
+    if (saved) return JSON.parse(saved);
+  } catch(e) {}
+  // Fallback: try inline server state
+  try {
+    const el = document.getElementById('saved-state');
+    if (el) return JSON.parse(el.textContent);
+  } catch(e) {}
+  return { completed: [], prizes: [], lastAction: null };
+}
+
+let state = loadState();
+
+function saveState() {
+  try { localStorage.setItem('gifted_tracker', JSON.stringify(state)); } catch(e) {}
+}
+
+// ============ RENDER ============
+function render() {
+  const app = document.getElementById('app');
+  const totalPts = state.completed.length * PTS_PER_UNIT;
+  const totalPrizes = Math.floor(totalPts / PTS_PER_PRIZE);
+  const ptsToNext = PTS_PER_PRIZE - (totalPts % PTS_PER_PRIZE);
+  const xpProgress = ((totalPts % PTS_PER_PRIZE) / PTS_PER_PRIZE) * 100;
+  const remaining = ALL_UNITS.length - state.completed.length;
+
+  let html = `
+    <div class="header">
+      <h1>⚔️ מבחן מחוננים ⚔️</h1>
+      <div class="subtitle">מעקב תרגול - מצב קרב!</div>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-box">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-value">${totalPts}</div>
+        <div class="stat-label">נקודות</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-icon">🏆</div>
+        <div class="stat-value">${totalPrizes}</div>
+        <div class="stat-label">פרסים</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-icon">📋</div>
+        <div class="stat-value">${state.completed.length}/${ALL_UNITS.length}</div>
+        <div class="stat-label">הושלמו</div>
+      </div>
+    </div>
+
+    <div class="xp-section">
+      <div class="xp-header">
+        <span class="xp-label">🔥 התקדמות לפרס הבא</span>
+        <span class="xp-value">${totalPts % PTS_PER_PRIZE}/${PTS_PER_PRIZE}</span>
+      </div>
+      <div class="xp-bar-bg">
+        <div class="xp-bar-fill" style="width:${xpProgress}%"></div>
+      </div>
+      <div class="xp-next-prize">${remaining > 0 ? `עוד ${ptsToNext} נקודות לפרס! (${ptsToNext/PTS_PER_UNIT} יחידות)` : '🎉 סיימת הכל! אלוף!'}</div>
+    </div>
+  `;
+
+  // Prizes section
+  if (state.prizes.length > 0) {
+    html += `<div class="prizes-section"><div class="prizes-title">🎁 הפרסים שלך</div><div class="prizes-list">`;
+    state.prizes.forEach(p => {
+      html += `<div class="prize-chip claimed">${p.icon} ${p.name}</div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  // Remaining units
+  const remaining_units = ALL_UNITS.filter(u => !state.completed.includes(u));
+  if (remaining_units.length > 0) {
+    html += `<div class="units-title">⚡ יחידות לתרגול (${remaining_units.length})</div>`;
+    remaining_units.forEach((unit, i) => {
+      const globalIdx = ALL_UNITS.indexOf(unit) + 1;
+      html += `
+        <div class="unit-card" onclick="completeUnit('${unit.replace(/'/g, "\\'")}')">
+          <div class="unit-num">${globalIdx}</div>
+          <div class="unit-name">${unit}</div>
+          <div class="unit-pts">+${PTS_PER_UNIT}</div>
+          <div class="unit-status">👊</div>
+        </div>`;
+    });
+  }
+
+  // Completed units
+  if (state.completed.length > 0) {
+    html += `<div class="units-title" style="margin-top:20px">✅ סיימנו! (${state.completed.length})</div>`;
+    state.completed.forEach((unit) => {
+      const globalIdx = ALL_UNITS.indexOf(unit) + 1;
+      html += `
+        <div class="unit-card done">
+          <div class="unit-num">✓</div>
+          <div class="unit-name">${unit}</div>
+          <div class="unit-pts">+${PTS_PER_UNIT} ✔</div>
+          <div class="unit-status">🌟</div>
+        </div>`;
+    });
+  }
+
+  // Undo
+  html += `<div class="undo-section"><button class="undo-btn" id="undoBtn" onclick="undoLast()">↩️ ביטול אחרון</button></div>`;
+
+  // Reset
+  html += `<div class="reset-section"><button class="reset-btn" onclick="resetAll()">🔄 איפוס הכל</button></div>`;
+
+  app.innerHTML = html;
+
+  // Show undo if applicable
+  if (state.lastAction) {
+    document.getElementById('undoBtn').style.display = 'inline-block';
+  }
+}
+
+// ============ ACTIONS ============
+function completeUnit(unitName) {
+  if (state.completed.includes(unitName)) return;
+
+  state.completed.push(unitName);
+  state.lastAction = { type: 'complete', unit: unitName };
+  saveState();
+
+  // Show +10 points animation
+  showPointsPopup();
+  spawnConfetti();
+
+  const totalPts = state.completed.length * PTS_PER_UNIT;
+  const earnedPrizes = Math.floor(totalPts / PTS_PER_PRIZE);
+
+  // Check if new prize earned
+  if (earnedPrizes > state.prizes.length) {
+    setTimeout(() => {
+      const available = PRIZES.filter(p => !state.prizes.some(sp => sp.name === p.name));
+      let prize;
+      if (available.length > 0) {
+        prize = available[Math.floor(Math.random() * available.length)];
+      } else {
+        prize = PRIZES[Math.floor(Math.random() * PRIZES.length)];
+      }
+      state.prizes.push(prize);
+      saveState();
+      // Save prize to server too
+      fetch('/api/add_prize', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({prize: prize})
+      }).catch(()=>{});
+      showPrizeModal(prize);
+    }, 1600);
+  }
+
+  // Move file to סיימנו folder
+  moveFileToCompleted(unitName);
+
+  setTimeout(() => render(), 300);
+}
+
+function moveFileToCompleted(unitName) {
+  // Call server API to move the file
+  fetch('/api/complete', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({unit: unitName})
+  }).catch(e => console.log('Server not running, file not moved'));
+}
+
+function undoLast() {
+  if (!state.lastAction) return;
+  const action = state.lastAction;
+  if (action.type === 'complete') {
+    // Call server to move file back
+    fetch('/api/undo', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({unit: action.unit})
+    }).catch(e => console.log('Server not running'));
+
+    state.completed = state.completed.filter(u => u !== action.unit);
+    const totalPts = state.completed.length * PTS_PER_UNIT;
+    const expectedPrizes = Math.floor(totalPts / PTS_PER_PRIZE);
+    while (state.prizes.length > expectedPrizes) {
+      fetch('/api/remove_prize', {method:'POST',headers:{'Content-Type':'application/json'},body:'{}'}).catch(()=>{});
+      state.prizes.pop();
+    }
+  }
+  state.lastAction = null;
+  saveState();
+  render();
+}
+
+function resetAll() {
+  if (confirm('בטוח? כל ההתקדמות תימחק!')) {
+    fetch('/api/reset', {method:'POST',headers:{'Content-Type':'application/json'},body:'{}'}).catch(()=>{});
+    state = { completed: [], prizes: [], lastAction: null };
+    saveState();
+    render();
+  }
+}
+
+// ============ EFFECTS ============
+function showPointsPopup() {
+  const popup = document.createElement('div');
+  popup.className = 'points-popup';
+  popup.innerHTML = `<div class="pts-text">+10</div><div class="pts-label">נקודות!</div>`;
+  document.body.appendChild(popup);
+  setTimeout(() => popup.remove(), 1600);
+}
+
+function spawnConfetti() {
+  const container = document.getElementById('particles');
+  const colors = ['#ffd700', '#ff8c00', '#ff3b3b', '#00e676', '#00e5ff', '#ff4081', '#fff'];
+  for (let i = 0; i < 40; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = 4 + Math.random() * 8;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.left = (10 + Math.random() * 80) + '%';
+    p.style.top = '-5%';
+    p.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+    p.style.animationDelay = (Math.random() * 0.5) + 's';
+    container.appendChild(p);
+    setTimeout(() => p.remove(), 4000);
+  }
+}
+
+function showPrizeModal(prize) {
+  spawnConfetti();
+  spawnConfetti();
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal-box">
+      <div class="trophy">🏆</div>
+      <h2>כל הכבוד!!!</h2>
+      <div class="prize-reveal">הגעת ל-${state.prizes.length * PTS_PER_PRIZE} נקודות!</div>
+      <div class="prize-icon">${prize.icon}</div>
+      <div class="prize-name">${prize.name}</div>
+      <button class="modal-btn" onclick="this.closest('.modal-overlay').remove(); render();">יאללה! 💪</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+}
+
+// ============ INIT ============
+render();
+</script>
+</body>
+</html>
