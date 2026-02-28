@@ -178,6 +178,30 @@
   }
   @keyframes shimmer { 0% { left: -100%; } 50% { left: 100%; } 100% { left: 100%; } }
   .unit-card:active { transform: scale(0.97); }
+  .unit-pdf-btn {
+    background: linear-gradient(135deg, var(--bs-cyan), #0088cc);
+    color: #fff; border: none; border-radius: 10px;
+    padding: 6px 10px; font-size: 1em; cursor: pointer;
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,229,255,0.3);
+    transition: transform 0.2s; min-width: 36px; min-height: 36px;
+    text-decoration: none;
+  }
+  .unit-pdf-btn:active { transform: scale(0.9); }
+  .unit-quiz-btn {
+    background: linear-gradient(135deg, var(--bs-green), #00b060);
+    color: #fff; border: none; border-radius: 10px;
+    padding: 6px 10px; font-size: 1em; cursor: pointer;
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,230,118,0.3);
+    transition: transform 0.2s; min-width: 36px; min-height: 36px;
+    text-decoration: none;
+  }
+  .unit-quiz-btn:active { transform: scale(0.9); }
+  .unit-card.done .unit-pdf-btn,
+  .unit-card.done .unit-quiz-btn {
+    opacity: 0.6;
+  }
   .unit-card.done {
     border-color: rgba(0,230,118,0.4);
     background: linear-gradient(180deg, rgba(0,100,50,0.3), rgba(0,60,30,0.3));
@@ -212,9 +236,7 @@
   }
 
   /* Star burst effect */
-  .star-burst {
-    position: fixed; pointer-events: none; z-index: 1001;
-  }
+  .star-burst { position: fixed; pointer-events: none; z-index: 1001; }
   .star-burst .ray {
     position: absolute; width: 3px; background: var(--bs-yellow);
     border-radius: 2px; transform-origin: bottom center;
@@ -355,6 +377,127 @@
     padding: 8px 20px; font-family: 'Rubik', sans-serif;
     font-size: 0.75em; font-weight: 600; cursor: pointer;
   }
+
+  /* ====== QUIZ STYLES ====== */
+  .quiz-container {
+    position: relative; z-index: 1;
+    max-width: 500px; margin: 0 auto; padding: 16px; padding-bottom: 100px;
+  }
+  .quiz-header {
+    text-align: center; padding: 16px; margin-bottom: 16px;
+    background: linear-gradient(180deg, rgba(45,27,105,0.8), rgba(30,58,95,0.6));
+    border-radius: 20px; border: 2px solid rgba(0,229,255,0.3);
+  }
+  .quiz-title {
+    font-size: 1.2em; font-weight: 900; color: var(--bs-cyan); margin-bottom: 4px;
+  }
+  .quiz-section-name {
+    font-size: 0.85em; color: var(--bs-yellow); font-weight: 600;
+  }
+  .quiz-timer {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(0,0,0,0.4); border-radius: 12px;
+    padding: 8px 16px; margin-top: 8px;
+    font-size: 1.4em; font-weight: 900; color: var(--bs-cyan);
+    border: 1px solid rgba(0,229,255,0.3);
+  }
+  .quiz-progress-bar {
+    height: 8px; border-radius: 4px; background: rgba(0,0,0,0.4);
+    margin: 12px 0; overflow: hidden; border: 1px solid rgba(255,215,0,0.2);
+  }
+  .quiz-progress-fill {
+    height: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, var(--bs-green), var(--bs-cyan));
+    transition: width 0.5s ease;
+  }
+  .quiz-progress-text {
+    font-size: 0.7em; color: #aaa; text-align: center; margin-bottom: 12px;
+  }
+  .quiz-question-card {
+    background: linear-gradient(180deg, rgba(45,27,105,0.7), rgba(30,58,95,0.5));
+    border-radius: 16px; padding: 20px; margin-bottom: 16px;
+    border: 2px solid rgba(255,255,255,0.1);
+  }
+  .quiz-q-num {
+    font-size: 0.75em; color: var(--bs-cyan); font-weight: 700; margin-bottom: 8px;
+  }
+  .quiz-q-text {
+    font-size: 1.05em; font-weight: 700; color: #fff; margin-bottom: 16px;
+    line-height: 1.6;
+  }
+  .quiz-options { display: flex; flex-direction: column; gap: 10px; }
+  .quiz-option {
+    background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 12px; padding: 14px 16px; cursor: pointer;
+    display: flex; align-items: center; gap: 12px;
+    transition: all 0.2s ease; font-size: 0.95em;
+  }
+  .quiz-option:active { transform: scale(0.98); }
+  .quiz-option.selected {
+    border-color: var(--bs-cyan); background: rgba(0,229,255,0.15);
+    box-shadow: 0 0 15px rgba(0,229,255,0.2);
+  }
+  .quiz-option .opt-letter {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 0.85em; flex-shrink: 0;
+  }
+  .quiz-option.selected .opt-letter {
+    background: var(--bs-cyan); border-color: var(--bs-cyan); color: #1a0a2e;
+  }
+  .quiz-nav {
+    display: flex; gap: 10px; justify-content: center; margin-top: 16px;
+  }
+  .quiz-nav-btn {
+    background: linear-gradient(180deg, var(--bs-purple), var(--bs-blue));
+    color: #fff; border: 2px solid rgba(255,215,0,0.3);
+    border-radius: 14px; padding: 12px 28px; font-family: 'Rubik', sans-serif;
+    font-size: 0.9em; font-weight: 700; cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .quiz-nav-btn:active { transform: scale(0.95); }
+  .quiz-nav-btn.primary {
+    background: linear-gradient(180deg, var(--bs-yellow), var(--bs-orange));
+    color: #1a0a2e; font-weight: 900;
+  }
+  .quiz-nav-btn.back-home {
+    background: linear-gradient(180deg, #444, #333); color: #ccc;
+    border-color: rgba(255,255,255,0.2);
+  }
+
+  /* Quiz Results */
+  .quiz-results {
+    background: linear-gradient(180deg, rgba(45,27,105,0.7), rgba(30,58,95,0.5));
+    border-radius: 20px; padding: 24px; margin-bottom: 16px;
+    border: 2px solid rgba(255,215,0,0.3);
+    text-align: center;
+  }
+  .quiz-score-big {
+    font-size: 3.5em; font-weight: 900;
+    background: linear-gradient(180deg, var(--bs-yellow), var(--bs-orange));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin: 10px 0;
+  }
+  .quiz-score-label { font-size: 1em; color: var(--bs-cyan); font-weight: 700; }
+  .quiz-time-result { font-size: 0.85em; color: #aaa; margin: 8px 0; }
+  .quiz-result-item {
+    background: rgba(0,0,0,0.3); border-radius: 12px; padding: 14px;
+    margin-bottom: 10px; text-align: right;
+    border: 2px solid rgba(255,255,255,0.05);
+  }
+  .quiz-result-item.correct { border-color: rgba(0,230,118,0.3); }
+  .quiz-result-item.wrong { border-color: rgba(255,59,59,0.3); }
+  .quiz-result-q { font-size: 0.85em; font-weight: 700; margin-bottom: 6px; color: #ddd; }
+  .quiz-result-answer { font-size: 0.8em; color: #aaa; }
+  .quiz-result-answer .correct-text { color: var(--bs-green); font-weight: 700; }
+  .quiz-result-answer .wrong-text { color: var(--bs-red); font-weight: 700; text-decoration: line-through; }
+  .quiz-result-icon { font-size: 1.2em; float: left; }
+  .quiz-section-header {
+    font-size: 0.9em; font-weight: 700; color: var(--bs-yellow);
+    margin: 16px 0 8px; text-align: center;
+    padding: 8px; background: rgba(255,215,0,0.1); border-radius: 10px;
+  }
 </style>
 </head>
 <body>
@@ -364,6 +507,11 @@
 <div class="app" id="app"></div>
 
 <script>
+// ====== QUIZ DATA ======
+const QUIZ_TESTS = [{"id":"test1","name":"מבחן מחוננים של קלאוד 1","sections":[{"id":"s1","name":"חלק 1: השלמת משפטים","type":"text","questions":[{"id":"q1","text":"הילד פתח את ______ כדי לקרוא את הסיפור.","text2":null,"options":["הדלת","התיק","הספר","החלון"],"correctAnswer":2},{"id":"q2","text":"בחורף הימים ______ והלילות ארוכים.","text2":null,"options":["חמים","יפים","קצרים","שמחים"],"correctAnswer":2},{"id":"q3","text":"הדבש מתוק, אבל הלימון ______.","text2":null,"options":["צהוב","עגול","חמוץ","קטן"],"correctAnswer":2},{"id":"q4","text":"כדי לחצות את הכביש בבטחה, יש לחכות שהרמזור יהיה ______.","text2":null,"options":["ירוק","אדום","צהוב","כבוי"],"correctAnswer":0},{"id":"q5","text":"הגשר ______ את שני צידי הנהר.","text2":null,"options":["הרס","הפריד","חיבר","מילא"],"correctAnswer":2}]},{"id":"s2","name":"חלק 2: קשרים מילוליים (אנלוגיות)","type":"text","questions":[{"id":"q1","text":"עין : ראייה  =  אוזן : ?","text2":null,"options":["פנים","שמיעה","צליל","ראש"],"correctAnswer":1},{"id":"q2","text":"ספר : קריאה  =  כינור : ?","text2":null,"options":["מוזיקה","נגינה","שירה","צליל"],"correctAnswer":1},{"id":"q3","text":"יום : לילה  =  קיץ : ?","text2":null,"options":["אביב","שמש","חורף","גשם"],"correctAnswer":2},{"id":"q4","text":"נהג : מכונית  =  טייס : ?","text2":null,"options":["שמיים","מטוס","ענן","כביש"],"correctAnswer":1},{"id":"q5","text":"אצבע : יד  =  עלה : ?","text2":null,"options":["ירוק","ענף","פרח","עץ"],"correctAnswer":3}]},{"id":"s3","name":"חלק 3: בעיות מילוליות (חשבון)","type":"text","questions":[{"id":"q1","text":"לדני יש 3 שקיות. בכל שקית יש 4 סוכריות. דני נתן 5 סוכריות לחברו.","text2":"כמה סוכריות נשארו לדני?","options":["5","7","8","12"],"correctAnswer":1},{"id":"q2","text":"בכיתה יש 24 תלמידים. מספר הבנות גדול פי 3 ממספר הבנים.","text2":"כמה בנים יש בכיתה?","options":["4","6","8","12"],"correctAnswer":1},{"id":"q3","text":"רכבת יוצאת מתחנה בשעה 9:15 ומגיעה ליעד אחרי 45 דקות.","text2":"באיזו שעה הגיעה הרכבת?","options":["9:45","9:55","10:00","10:15"],"correctAnswer":2},{"id":"q4","text":"לשרה יש כמות מסוימת של גולות. היא נתנה חצי מהגולות לרון,","text2":"ואז נשארו לה 8 גולות. כמה גולות היו לשרה בהתחלה?","options":["12","14","16","18"],"correctAnswer":2},{"id":"q5","text":"בחנות יש 5 מדפים. בכל מדף יש 6 ספרים. מכרו 8 ספרים.","text2":"כמה ספרים נשארו בחנות?","options":["18","20","22","24"],"correctAnswer":2}]}]},{"id":"test2","name":"מבחן מחוננים של קלאוד 2","sections":[{"id":"s1","name":"חלק 1: השלמת משפטים","type":"text","questions":[{"id":"q1","text":"האמן צייר ______ יפה על הקיר.","text2":null,"options":["שולחן","חלון","ציור","כיסא"],"correctAnswer":2},{"id":"q2","text":"כשיורד גשם חזק, הרחובות נהיים ______.","text2":null,"options":["יבשים","רטובים","גבוהים","חמים"],"correctAnswer":1},{"id":"q3","text":"הציפור בנתה ______ על ענף העץ.","text2":null,"options":["בית","גדר","קן","גג"],"correctAnswer":2},{"id":"q4","text":"אחרי שרצנו הרבה, הרגשנו ______ ורצינו לנוח.","text2":null,"options":["רעבים","עייפים","שמחים","קרים"],"correctAnswer":1},{"id":"q5","text":"הספרייה היא מקום שבו אפשר ______ ספרים.","text2":null,"options":["לבשל","לנסוע","למכור","לשאול"],"correctAnswer":3}]},{"id":"s2","name":"חלק 2: קשרים מילוליים (אנלוגיות)","type":"text","questions":[{"id":"q1","text":"רופא : בית חולים  =  מורה : ?","text2":null,"options":["ילד","בית ספר","ספר","כיתה"],"correctAnswer":1},{"id":"q2","text":"חם : קר  =  גבוה : ?","text2":null,"options":["רחב","נמוך","ארוך","גדול"],"correctAnswer":1},{"id":"q3","text":"דג : מים  =  ציפור : ?","text2":null,"options":["עץ","ים","שמיים","כנף"],"correctAnswer":2},{"id":"q4","text":"מספריים : גזירה  =  עט : ?","text2":null,"options":["נייר","כתיבה","ציור","קריאה"],"correctAnswer":1},{"id":"q5","text":"שן : פה  =  שיער : ?","text2":null,"options":["פנים","ראש","גוף","יד"],"correctAnswer":1}]},{"id":"s3","name":"חלק 3: בעיות מילוליות (חשבון)","type":"text","questions":[{"id":"q1","text":"בקופסה יש 18 עפרונות. חילקו אותם שווה בשווה בין 3 ילדים.","text2":"כל ילד נתן 2 עפרונות לחבר. כמה עפרונות נשארו לכל ילד?","options":["3","4","6","8"],"correctAnswer":1},{"id":"q2","text":"אמא קנתה 4 חבילות ביסקוויטים. בכל חבילה יש 8 ביסקוויטים.","text2":"המשפחה אכלה 12 ביסקוויטים. כמה ביסקוויטים נשארו?","options":["16","20","24","28"],"correctAnswer":1},{"id":"q3","text":"אוטובוס יצא מהתחנה בשעה 8:40 ונסע במשך 55 דקות.","text2":"באיזו שעה הגיע האוטובוס ליעד?","options":["9:25","9:35","9:45","9:55"],"correctAnswer":1},{"id":"q4","text":"לרון יש 15 גולות. לדנה יש פי 2 ממה שיש לרון.","text2":"כמה גולות יש לשניהם ביחד?","options":["30","35","40","45"],"correctAnswer":3},{"id":"q5","text":"בחניון היו 36 מכוניות. יצאו חצי מהמכוניות,","text2":"ואז נכנסו 8 מכוניות חדשות. כמה מכוניות בחניון עכשיו?","options":["22","24","26","28"],"correctAnswer":2}]}]},{"id":"test3","name":"מבחן מחוננים של קלאוד 3","sections":[{"id":"s1","name":"חלק 1: השלמת משפטים","type":"text","questions":[{"id":"q1","text":"הכלב ______ בשמחה כשראה את בעליו.","text2":null,"options":["נשך","קפץ","ישן","בכה"],"correctAnswer":1},{"id":"q2","text":"בחורף הימים ______ יותר מאשר בקיץ.","text2":null,"options":["ארוכים","קצרים","חמים","שקטים"],"correctAnswer":1},{"id":"q3","text":"הנגר בנה ______ חדש מעץ אלון.","text2":null,"options":["עוגה","שולחן","שיר","תמונה"],"correctAnswer":1},{"id":"q4","text":"כדי לראות בחושך אנחנו צריכים ______.","text2":null,"options":["מטריה","כובע","פנס","מפתח"],"correctAnswer":2},{"id":"q5","text":"הספרן עוזר לנו למצוא ______ בספרייה.","text2":null,"options":["אוכל","צעצועים","בגדים","ספרים"],"correctAnswer":3}]},{"id":"s2","name":"חלק 2: קשרים מילוליים (אנלוגיות)","type":"text","questions":[{"id":"q1","text":"נהג : מכונית  =  טייס : ?","text2":null,"options":["רכבת","מטוס","אופניים","סירה"],"correctAnswer":1},{"id":"q2","text":"אצבע : יד  =  בוהן : ?","text2":null,"options":["נעל","כף רגל","גרב","רגל"],"correctAnswer":1},{"id":"q3","text":"חלב : לבן  =  דם : ?","text2":null,"options":["כחול","ירוק","אדום","צהוב"],"correctAnswer":2},{"id":"q4","text":"מספריים : לגזור  =  מברג : ?","text2":null,"options":["לדפוק","להבריג","לחתוך","לצייר"],"correctAnswer":1},{"id":"q5","text":"יום : לילה  =  קיץ : ?","text2":null,"options":["אביב","סתיו","חורף","שבוע"],"correctAnswer":2}]},{"id":"s3","name":"חלק 3: בעיות מילוליות (חשבון)","type":"text","questions":[{"id":"q1","text":"בכיתה 32 תלמידים. המורה חילקה אותם ל-4 קבוצות שוות.","text2":"כמה תלמידים בכל קבוצה?","options":["6","7","8","9"],"correctAnswer":2},{"id":"q2","text":"אמא קנתה 5 ק\"ג תפוחים. כל ק\"ג עולה 7 ש\"ח.","text2":"שילמה בשטר של 50 ש\"ח. כמה עודף קיבלה?","options":["15","25","12","20"],"correctAnswer":0},{"id":"q3","text":"אוטובוס יצא מהתחנה בשעה 7:45 ונסע במשך 50 דקות.","text2":"באיזו שעה הגיע ליעד?","options":["8:25","8:35","8:45","8:55"],"correctAnswer":1},{"id":"q4","text":"לדני יש 18 גולות. לרון יש פי 3 ממה שיש לדני.","text2":"כמה גולות יש לשניהם ביחד?","options":["54","72","36","60"],"correctAnswer":1},{"id":"q5","text":"בחנות היו 60 תפוזים. מכרו שליש מהם.","text2":"כמה תפוזים נשארו בחנות?","options":["40","20","30","45"],"correctAnswer":0}]}]},{"id":"test4","name":"מבחן מחוננים של קלאוד 4","sections":[{"id":"s1","name":"חלק 1: השלמת משפטים","type":"text","questions":[{"id":"q1","text":"הרוח ______ בחוזקה והעפיפון עף גבוה.","text2":null,"options":["נשבה","ירדה","עלתה","נפלה"],"correctAnswer":0},{"id":"q2","text":"החתול טיפס על ה______ ולא הצליח לרדת.","text2":null,"options":["רצפה","עץ","ים","כביש"],"correctAnswer":1},{"id":"q3","text":"כשרוצים לדעת מה השעה, מסתכלים על ______.","text2":null,"options":["לוח","שעון","ספר","מראה"],"correctAnswer":1},{"id":"q4","text":"האופה הכין ______ טעימה במיוחד לחג.","text2":null,"options":["מכתב","עוגה","תמונה","שיר"],"correctAnswer":1},{"id":"q5","text":"כדי לחצות את הכביש בבטחה יש לחכות ל______.","text2":null,"options":["גשם","רוח","אור ירוק","שקט"],"correctAnswer":2}]},{"id":"s2","name":"חלק 2: קשרים מילוליים (אנלוגיות)","type":"text","questions":[{"id":"q1","text":"עץ : יער  =  בית : ?","text2":null,"options":["גן","חדר","רחוב","שכונה"],"correctAnswer":3},{"id":"q2","text":"כנף : ציפור  =  סנפיר : ?","text2":null,"options":["חתול","כלב","דג","סוס"],"correctAnswer":2},{"id":"q3","text":"רופא : מרפא  =  שוטר : ?","text2":null,"options":["בונה","מגן","מלמד","נוהג"],"correctAnswer":1},{"id":"q4","text":"ראשון : אחרון  =  התחלה : ?","text2":null,"options":["אמצע","סוף","שני","פתיחה"],"correctAnswer":1},{"id":"q5","text":"קרח : קר  =  אש : ?","text2":null,"options":["מים","חם","אדום","עשן"],"correctAnswer":1}]},{"id":"s3","name":"חלק 3: בעיות מילוליות (חשבון)","type":"text","questions":[{"id":"q1","text":"בכיתה 45 תלמידים. שליש מהם הלכו הביתה","text2":"ואז הגיעו 5 תלמידים חדשים. כמה תלמידים בכיתה עכשיו?","options":["30","35","25","40"],"correctAnswer":1},{"id":"q2","text":"בקולנוע 6 שורות. בכל שורה 7 כיסאות.","text2":"הוציאו 8 כיסאות לתיקון. כמה כיסאות נשארו?","options":["30","36","34","38"],"correctAnswer":2},{"id":"q3","text":"רכבת יצאה מהתחנה בשעה 9:20 ונסעה 45 דקות.","text2":"באיזו שעה הגיעה הרכבת ליעד?","options":["9:55","10:05","10:15","10:45"],"correctAnswer":1},{"id":"q4","text":"לכל אחד מ-3 ילדים יש 12 ממתקים. כל ילד אכל 1 ממתק.","text2":"כמה ממתקים נשארו לכל ילד?","options":["10","11","9","8"],"correctAnswer":1},{"id":"q5","text":"אבא קנה 8 ק\"ג תפוחים ב-5 ש\"ח לק\"ג","text2":"ו-2 ק\"ג אגסים ב-8 ש\"ח לק\"ג. כמה שילם סה\"כ?","options":["48","50","54","56"],"correctAnswer":3}]}]},{"id":"test5","name":"מבחן מחוננים של קלאוד 5","sections":[{"id":"s1","name":"חלק 1: השלמת משפטים","type":"text","questions":[{"id":"q1","text":"הטבח הכין ______ טעימה לארוחת הערב.","text2":null,"options":["שולחן","ארוחה","מנורה","כרית"],"correctAnswer":1},{"id":"q2","text":"כדי לשמוע מוזיקה אנחנו משתמשים ב______.","text2":null,"options":["עיניים","אוזניים","ידיים","רגליים"],"correctAnswer":1},{"id":"q3","text":"הילדים יצאו ל______ בזמן ההפסקה.","text2":null,"options":["שינה","חצר","שיעור","מבחן"],"correctAnswer":1},{"id":"q4","text":"אחרי הגשם נראה לפעמים ______ בשמיים.","text2":null,"options":["שלג","קשת","כוכב","ירח"],"correctAnswer":1},{"id":"q5","text":"הדואר מביא ______ לתיבת הדואר שלנו.","text2":null,"options":["פרחים","מכתבים","ספרים","צעצועים"],"correctAnswer":1}]},{"id":"s2","name":"חלק 2: קשרים מילוליים (אנלוגיות)","type":"text","questions":[{"id":"q1","text":"עין : לראות  =  אוזן : ?","text2":null,"options":["לדבר","לשמוע","לגעת","להריח"],"correctAnswer":1},{"id":"q2","text":"צמר : כבשה  =  ביצה : ?","text2":null,"options":["פרה","תרנגולת","סוס","כלב"],"correctAnswer":1},{"id":"q3","text":"עגול : כדור  =  מרובע : ?","text2":null,"options":["קוביה","חרוט","גליל","פירמידה"],"correctAnswer":0},{"id":"q4","text":"דקה : שעה  =  יום : ?","text2":null,"options":["לילה","חודש","שנה","שבוע"],"correctAnswer":3},{"id":"q5","text":"חורף : גשם  =  קיץ : ?","text2":null,"options":["שלג","שמש","ענן","רוח"],"correctAnswer":1}]},{"id":"s3","name":"חלק 3: בעיות מילוליות (חשבון)","type":"text","questions":[{"id":"q1","text":"48 ילדים חולקו ל-6 קבוצות שוות.","text2":"כמה ילדים בכל קבוצה?","options":["6","7","8","9"],"correctAnswer":2},{"id":"q2","text":"3 ילדים. לכל אחד 7 מדבקות. כל אחד קיבל עוד 4.","text2":"כמה מדבקות יש לכולם ביחד?","options":["25","30","33","36"],"correctAnswer":2},{"id":"q3","text":"סרט התחיל בשעה 4:50 ונמשך שעה ו-25 דקות.","text2":"באיזו שעה נגמר הסרט?","options":["6:05","6:10","6:15","6:25"],"correctAnswer":2},{"id":"q4","text":"לתמר יש 36 ש\"ח. קנתה 4 עטים ב-5 ש\"ח כל אחד.","text2":"כמה כסף נשאר לתמר?","options":["12","16","20","24"],"correctAnswer":1},{"id":"q5","text":"בחנות 80 תפוחים. מכרו רבע בבוקר ורבע אחה\"צ.","text2":"כמה תפוחים נשארו?","options":["20","30","40","60"],"correctAnswer":2}]}]},{"id":"test6","name":"מבחן מחוננים של קלאוד 6","sections":[{"id":"s1","name":"חלק 1: השלמת משפטים","type":"text","questions":[{"id":"q1","text":"השחקנים רצו על ______ הכדורגל.","text2":null,"options":["הגג","המגרש","הכביש","השולחן"],"correctAnswer":1},{"id":"q2","text":"בגן החיות ראינו ______ גדול מאוד.","text2":null,"options":["ספר","פיל","כדור","שולחן"],"correctAnswer":1},{"id":"q3","text":"הצייר צייר ______ יפה על הבד.","text2":null,"options":["שיר","ריקוד","תמונה","סיפור"],"correctAnswer":2},{"id":"q4","text":"הילדים אהבו לשחק ב______ אחרי הלימודים.","text2":null,"options":["מבחן","פארק","כיתה","שיעור"],"correctAnswer":1},{"id":"q5","text":"החקלאי גידל ______ טריים בשדה.","text2":null,"options":["מכוניות","ירקות","ספרים","כיסאות"],"correctAnswer":1}]},{"id":"s2","name":"חלק 2: קשרים מילוליים (אנלוגיות)","type":"text","questions":[{"id":"q1","text":"צבע : מכחול  =  מוזיקה : ?","text2":null,"options":["ספר","כינור","תמונה","מחברת"],"correctAnswer":1},{"id":"q2","text":"עלה : עץ  =  כנף : ?","text2":null,"options":["ציפור","דג","נחש","צב"],"correctAnswer":0},{"id":"q3","text":"רעב : אוכל  =  צמא : ?","text2":null,"options":["לחם","שתייה","שינה","בגד"],"correctAnswer":1},{"id":"q4","text":"אבן : קשה  =  צמר : ?","text2":null,"options":["חד","כבד","רך","מהיר"],"correctAnswer":2},{"id":"q5","text":"אח : אחות  =  סבא : ?","text2":null,"options":["אבא","אמא","סבתא","דוד"],"correctAnswer":2}]},{"id":"s3","name":"חלק 3: בעיות מילוליות (חשבון)","type":"text","questions":[{"id":"q1","text":"בארון 42 גרביים. חצי מהן כחולות.","text2":"שליש מהכחולות מלוכלכות. כמה גרביים כחולות נקיות?","options":["7","14","21","28"],"correctAnswer":1},{"id":"q2","text":"רכבת עוצרת כל 15 דקות. יצאה בשעה 8:00.","text2":"באיזו שעה תעצור בפעם הרביעית?","options":["8:45","8:30","8:55","9:00"],"correctAnswer":3},{"id":"q3","text":"4 חברים אספו 7 צדפים כל אחד.","text2":"נתנו 10 צדפים לחבר. כמה צדפים נשארו?","options":["14","16","18","20"],"correctAnswer":2},{"id":"q4","text":"אבא קנה 3 פיצות. כל פיצה חולקה ל-8 משולשים.","text2":"המשפחה אכלה 19 משולשים. כמה נשארו?","options":["5","3","7","9"],"correctAnswer":0},{"id":"q5","text":"המרחק מהבית לבית הספר הוא 2 ק\"מ.","text2":"דני הולך ובא כל יום. כמה ק\"מ ב-5 ימים?","options":["10","15","20","25"],"correctAnswer":2}]}]},{"id":"test7","name":"מבחן מחוננים של קלאוד 7","sections":[{"id":"s1","name":"חלק 1: השלמת משפטים","type":"text","questions":[{"id":"q1","text":"הדבורה אוספת ______ מהפרחים.","text2":null,"options":["עלים","צוף","מים","אבנים"],"correctAnswer":1},{"id":"q2","text":"כשיורד שלג הילדים בונים ______ בחוץ.","text2":null,"options":["בית","בובת שלג","גדר","שולחן"],"correctAnswer":1},{"id":"q3","text":"הקוסם הוציא ______ מהכובע.","text2":null,"options":["מפתח","ארנב","ספר","נעל"],"correctAnswer":1},{"id":"q4","text":"הנהר ______ לאט לכיוון הים.","text2":null,"options":["זורם","קופץ","עף","נופל"],"correctAnswer":0},{"id":"q5","text":"כדי לחפור בחול צריך ______ ודלי.","text2":null,"options":["מטריה","את","מגבת","כובע"],"correctAnswer":1}]},{"id":"s2","name":"חלק 2: קשרים מילוליים (אנלוגיות)","type":"text","questions":[{"id":"q1","text":"ענן : שמיים  =  ספינה : ?","text2":null,"options":["יבשה","ים","אוויר","הר"],"correctAnswer":1},{"id":"q2","text":"צעיר : זקן  =  חדש : ?","text2":null,"options":["גדול","ישן","יפה","קטן"],"correctAnswer":1},{"id":"q3","text":"מורה : מלמד  =  רופא : ?","text2":null,"options":["לומד","מרפא","בונה","נוהג"],"correctAnswer":1},{"id":"q4","text":"עיגול : כדור  =  ריבוע : ?","text2":null,"options":["מלבן","קוביה","משולש","חרוט"],"correctAnswer":1},{"id":"q5","text":"פסנתר : כלי נגינה  =  ורד : ?","text2":null,"options":["עץ","פרח","גינה","אדום"],"correctAnswer":1}]},{"id":"s3","name":"חלק 3: בעיות מילוליות (חשבון)","type":"text","questions":[{"id":"q1","text":"בספרייה 96 ספרים ב-8 מדפים שווים.","text2":"הוציאו 4 ספרים ממדף אחד. כמה ספרים נשארו במדף?","options":["6","7","8","10"],"correctAnswer":2},{"id":"q2","text":"7 ילדים: 3 קיבלו 4 סוכריות כל אחד, ו-4 קיבלו 6.","text2":"כמה סוכריות חולקו סה\"כ?","options":["28","30","34","36"],"correctAnswer":3},{"id":"q3","text":"שעון מראה 3:15.","text2":"לפני כמה דקות הוא הראה 2:50?","options":["15","25","35","45"],"correctAnswer":1},{"id":"q4","text":"60 בלונים. חצי אדומים. שליש מהאדומים התפוצצו.","text2":"כמה בלונים אדומים שלמים?","options":["10","20","25","30"],"correctAnswer":1},{"id":"q5","text":"חניון עם 5 שורות ו-8 מקומות בכל שורה.","text2":"26 מכוניות בחניון. כמה מקומות פנויים?","options":["12","13","14","16"],"correctAnswer":2}]}]}];
+
+const UNIT_QUIZ_MAP = {"מבחן מלא לדוגמא קלאוד יום ו":"test1","מבחן מלא לדוגמא קלאוד יום ח":"test2","מבחן מחוננים של קלאוד 3":"test3","מבחן מחוננים של קלאוד 4":"test4","מבחן מחוננים של קלאוד 5":"test5","מבחן מחוננים של קלאוד 6":"test6","מבחן מחוננים של קלאוד 7":"test7"};
+
 const ALL_UNITS = [
   "בעיות מילוליות בלבד",
   "הבנת הנקרא וידע כללי בלבד",
@@ -407,6 +555,7 @@ const RANK_NAMES = [
   { min: 190, name: "אגדה!", icon: "⚡" }
 ];
 
+const LABELS = ['א', 'ב', 'ג', 'ד'];
 const PTS_PER_UNIT = 10;
 const PTS_PER_PRIZE = 50;
 let showAdmin = false;
@@ -417,16 +566,13 @@ function loadState() {
     const saved = localStorage.getItem('gifted_tracker');
     if (saved) return JSON.parse(saved);
   } catch(e) {}
-  try {
-    const el = document.getElementById('saved-state');
-    if (el) return JSON.parse(el.textContent);
-  } catch(e) {}
-  return { completed: [], prizes: [], lastAction: null, bonusPts: 0, completedDates: {} };
+  return { completed: [], prizes: [], lastAction: null, bonusPts: 0, completedDates: {}, quizScores: {} };
 }
 
 let state = loadState();
 if (!state.bonusPts) state.bonusPts = 0;
 if (!state.completedDates) state.completedDates = {};
+if (!state.quizScores) state.quizScores = {};
 
 function saveState() {
   try { localStorage.setItem('gifted_tracker', JSON.stringify(state)); } catch(e) {}
@@ -460,8 +606,304 @@ function getStreak() {
   return streak;
 }
 
-// ============ RENDER ============
+// ============ QUIZ STATE ============
+let quizActive = false;
+let currentQuiz = null;  // {testId, test, answers: {sectionIdx_qIdx: answerIdx}, currentQ: idx}
+let quizTimer = null;
+let quizStartTime = null;
+let quizElapsed = 0;
+
+function getQuizForUnit(unitName) {
+  const testId = UNIT_QUIZ_MAP[unitName];
+  if (!testId) return null;
+  return QUIZ_TESTS.find(t => t.id === testId);
+}
+
+function getAllQuizQuestions(test) {
+  const questions = [];
+  test.sections.forEach((sec, si) => {
+    sec.questions.forEach((q, qi) => {
+      questions.push({ ...q, sectionIdx: si, questionIdx: qi, sectionName: sec.name });
+    });
+  });
+  return questions;
+}
+
+function startQuiz(unitName) {
+  const test = getQuizForUnit(unitName);
+  if (!test) return;
+  quizActive = true;
+  currentQuiz = {
+    testId: test.id,
+    unitName: unitName,
+    test: test,
+    answers: {},
+    currentQ: 0,
+    allQuestions: getAllQuizQuestions(test)
+  };
+  quizElapsed = 0;
+  quizStartTime = Date.now();
+  quizTimer = setInterval(() => {
+    quizElapsed = Math.floor((Date.now() - quizStartTime) / 1000);
+    const timerEl = document.getElementById('quiz-timer-display');
+    if (timerEl) timerEl.textContent = formatTime(quizElapsed);
+  }, 1000);
+  renderQuiz();
+}
+
+function formatTime(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+}
+
+function selectAnswer(idx) {
+  if (!currentQuiz) return;
+  const q = currentQuiz.allQuestions[currentQuiz.currentQ];
+  const key = q.sectionIdx + '_' + q.questionIdx;
+  currentQuiz.answers[key] = idx;
+  renderQuiz();
+}
+
+function nextQuestion() {
+  if (!currentQuiz) return;
+  if (currentQuiz.currentQ < currentQuiz.allQuestions.length - 1) {
+    currentQuiz.currentQ++;
+    renderQuiz();
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+}
+
+function prevQuestion() {
+  if (!currentQuiz) return;
+  if (currentQuiz.currentQ > 0) {
+    currentQuiz.currentQ--;
+    renderQuiz();
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+}
+
+function finishQuiz() {
+  if (!currentQuiz) return;
+  clearInterval(quizTimer);
+  quizTimer = null;
+  const totalQ = currentQuiz.allQuestions.length;
+  const unanswered = totalQ - Object.keys(currentQuiz.answers).length;
+  if (unanswered > 0) {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.innerHTML = `
+      <div class="modal-box">
+        <div class="trophy">✋</div>
+        <h2>רגע!</h2>
+        <div class="confirm-text">יש לך עוד ${unanswered} שאלות בלי תשובה.<br>בטוח שאתה רוצה לסיים?</div>
+        <div>
+          <button class="modal-btn danger" onclick="this.closest('.modal-overlay').remove(); showResults();">כן, סיים</button>
+          <button class="modal-btn cancel" onclick="this.closest('.modal-overlay').remove(); quizStartTime=Date.now()-quizElapsed*1000; quizTimer=setInterval(()=>{quizElapsed=Math.floor((Date.now()-quizStartTime)/1000);const t=document.getElementById('quiz-timer-display');if(t)t.textContent=formatTime(quizElapsed);},1000);">חזור למבחן</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    return;
+  }
+  showResults();
+}
+
+function showResults() {
+  clearInterval(quizTimer);
+  quizTimer = null;
+  let correct = 0;
+  const total = currentQuiz.allQuestions.length;
+  currentQuiz.allQuestions.forEach(q => {
+    const key = q.sectionIdx + '_' + q.questionIdx;
+    if (currentQuiz.answers[key] === q.correctAnswer) correct++;
+  });
+
+  // Save score
+  state.quizScores[currentQuiz.testId] = {
+    score: correct,
+    total: total,
+    time: quizElapsed,
+    date: new Date().toISOString().slice(0, 10)
+  };
+  saveState();
+
+  currentQuiz.showResults = true;
+  currentQuiz.correctCount = correct;
+  renderQuizResults();
+}
+
+function exitQuiz() {
+  clearInterval(quizTimer);
+  quizTimer = null;
+  quizActive = false;
+  currentQuiz = null;
+  render();
+}
+
+// ============ RENDER QUIZ ============
+function renderQuiz() {
+  const app = document.getElementById('app');
+  const q = currentQuiz.allQuestions[currentQuiz.currentQ];
+  const key = q.sectionIdx + '_' + q.questionIdx;
+  const selectedAnswer = currentQuiz.answers[key];
+  const totalQ = currentQuiz.allQuestions.length;
+  const answered = Object.keys(currentQuiz.answers).length;
+  const progress = (answered / totalQ) * 100;
+
+  let html = `
+    <div class="quiz-container">
+      <div class="quiz-header">
+        <div class="quiz-title">${currentQuiz.test.name}</div>
+        <div class="quiz-section-name">${q.sectionName}</div>
+        <div class="quiz-timer">⏱️ <span id="quiz-timer-display">${formatTime(quizElapsed)}</span></div>
+      </div>
+      <div class="quiz-progress-bar">
+        <div class="quiz-progress-fill" style="width:${progress}%"></div>
+      </div>
+      <div class="quiz-progress-text">ענית על ${answered} מתוך ${totalQ} שאלות</div>
+
+      <div class="quiz-question-card">
+        <div class="quiz-q-num">שאלה ${currentQuiz.currentQ + 1} מתוך ${totalQ}</div>
+        <div class="quiz-q-text">
+          ${q.text}
+          ${q.text2 ? '<br>' + q.text2 : ''}
+        </div>
+        <div class="quiz-options">`;
+
+  q.options.forEach((opt, i) => {
+    const isSelected = selectedAnswer === i;
+    html += `
+          <div class="quiz-option ${isSelected ? 'selected' : ''}" onclick="selectAnswer(${i})">
+            <div class="opt-letter">${LABELS[i]}</div>
+            <div>${opt}</div>
+          </div>`;
+  });
+
+  html += `
+        </div>
+      </div>
+      <div class="quiz-nav">`;
+
+  if (currentQuiz.currentQ > 0) {
+    html += `<button class="quiz-nav-btn" onclick="prevQuestion()">→ הקודם</button>`;
+  }
+
+  if (currentQuiz.currentQ < totalQ - 1) {
+    html += `<button class="quiz-nav-btn primary" onclick="nextQuestion()">הבא ←</button>`;
+  } else {
+    html += `<button class="quiz-nav-btn primary" onclick="finishQuiz()">🏁 סיים מבחן</button>`;
+  }
+
+  html += `
+      </div>
+      <div style="text-align:center; margin-top:16px;">
+        <button class="quiz-nav-btn back-home" onclick="exitQuizConfirm()">↩️ חזור לדף הבית</button>
+      </div>
+
+      <div style="display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-top:16px;">`;
+
+  // Question navigation dots
+  for (let i = 0; i < totalQ; i++) {
+    const qq = currentQuiz.allQuestions[i];
+    const kk = qq.sectionIdx + '_' + qq.questionIdx;
+    const isAnswered = currentQuiz.answers[kk] !== undefined;
+    const isCurrent = i === currentQuiz.currentQ;
+    const bg = isCurrent ? 'var(--bs-cyan)' : (isAnswered ? 'var(--bs-green)' : 'rgba(255,255,255,0.15)');
+    const border = isCurrent ? 'var(--bs-cyan)' : (isAnswered ? 'var(--bs-green)' : 'rgba(255,255,255,0.2)');
+    html += `<div onclick="currentQuiz.currentQ=${i}; renderQuiz(); window.scrollTo({top:0,behavior:'smooth'});"
+      style="width:28px; height:28px; border-radius:50%; background:${bg}; border:2px solid ${border};
+      display:flex; align-items:center; justify-content:center; font-size:0.6em; font-weight:900;
+      cursor:pointer; color:${isCurrent || isAnswered ? '#1a0a2e' : '#888'};">${i+1}</div>`;
+  }
+
+  html += `
+      </div>
+    </div>`;
+
+  app.innerHTML = html;
+}
+
+function renderQuizResults() {
+  const app = document.getElementById('app');
+  const correct = currentQuiz.correctCount;
+  const total = currentQuiz.allQuestions.length;
+  const pct = Math.round((correct / total) * 100);
+  const emoji = pct >= 80 ? '🌟' : pct >= 60 ? '👍' : pct >= 40 ? '💪' : '📚';
+  const msg = pct >= 80 ? '!מדהים, אלוף' : pct >= 60 ? '!כל הכבוד' : pct >= 40 ? '!לא רע, תמשיך' : 'בוא נתרגל עוד קצת';
+
+  let html = `
+    <div class="quiz-container">
+      <div class="quiz-results">
+        <div style="font-size:4em;">${emoji}</div>
+        <div class="quiz-score-big">${correct}/${total}</div>
+        <div class="quiz-score-label">${msg}</div>
+        <div class="quiz-score-label" style="font-size:2em; margin-top:4px;">${pct}%</div>
+        <div class="quiz-time-result">⏱️ זמן: ${formatTime(quizElapsed)}</div>
+      </div>
+
+      <div class="quiz-nav" style="margin-bottom:20px;">
+        <button class="quiz-nav-btn primary" onclick="exitQuiz()">↩️ חזור לדף הבית</button>
+        <button class="quiz-nav-btn" onclick="startQuiz(currentQuiz.unitName)">🔄 נסה שוב</button>
+      </div>
+
+      <div class="units-title">📋 סיכום תשובות</div>`;
+
+  let currentSection = '';
+  currentQuiz.allQuestions.forEach((q, i) => {
+    if (q.sectionName !== currentSection) {
+      currentSection = q.sectionName;
+      html += `<div class="quiz-section-header">${currentSection}</div>`;
+    }
+    const key = q.sectionIdx + '_' + q.questionIdx;
+    const userAnswer = currentQuiz.answers[key];
+    const isCorrect = userAnswer === q.correctAnswer;
+    const isUnanswered = userAnswer === undefined;
+
+    html += `
+      <div class="quiz-result-item ${isCorrect ? 'correct' : 'wrong'}">
+        <div class="quiz-result-icon">${isCorrect ? '✅' : (isUnanswered ? '⬜' : '❌')}</div>
+        <div class="quiz-result-q">${i+1}. ${q.text}${q.text2 ? ' ' + q.text2 : ''}</div>
+        <div class="quiz-result-answer">`;
+
+    if (isUnanswered) {
+      html += `<span style="color:#888;">לא נענתה</span> | `;
+      html += `תשובה נכונה: <span class="correct-text">${LABELS[q.correctAnswer]}. ${q.options[q.correctAnswer]}</span>`;
+    } else if (isCorrect) {
+      html += `<span class="correct-text">${LABELS[userAnswer]}. ${q.options[userAnswer]} ✓</span>`;
+    } else {
+      html += `<span class="wrong-text">${LABELS[userAnswer]}. ${q.options[userAnswer]}</span> | `;
+      html += `תשובה נכונה: <span class="correct-text">${LABELS[q.correctAnswer]}. ${q.options[q.correctAnswer]}</span>`;
+    }
+
+    html += `</div></div>`;
+  });
+
+  html += `</div>`;
+  app.innerHTML = html;
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function exitQuizConfirm() {
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal-box">
+      <div class="trophy">⚠️</div>
+      <h2>לצאת מהמבחן?</h2>
+      <div class="confirm-text">ההתקדמות שלך במבחן הזה תאבד.</div>
+      <div>
+        <button class="modal-btn danger" onclick="this.closest('.modal-overlay').remove(); exitQuiz();">כן, צא</button>
+        <button class="modal-btn cancel" onclick="this.closest('.modal-overlay').remove();">המשך מבחן</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+}
+
+// ============ RENDER MAIN ============
 function render() {
+  if (quizActive) { renderQuiz(); return; }
   const app = document.getElementById('app');
   const totalPts = getTotalPts();
   const totalPrizes = Math.floor(totalPts / PTS_PER_PRIZE);
@@ -483,7 +925,7 @@ function render() {
       <div class="avatar">${rank.icon}</div>
       <div class="player-name">סהר</div>
       <div class="player-rank">דרגה: ${rank.name}</div>
-      ${streak >= 2 ? `<div class="streak-badge">🔥 רצף ${streak} ימים!</div>` : ''}
+      ${streak >= 2 ? '<div class="streak-badge">🔥 רצף ' + streak + ' ימים!</div>' : ''}
     </div>
 
     <div class="stats-bar">
@@ -513,7 +955,7 @@ function render() {
         <div class="xp-bar-fill" style="width:${xpProgress}%"></div>
         <div class="xp-bar-text">${ptsInCycle}/${PTS_PER_PRIZE}</div>
       </div>
-      <div class="xp-next-prize">${remaining > 0 ? `עוד ${ptsToNext} נקודות לפרס!` : ''}</div>
+      <div class="xp-next-prize">${remaining > 0 ? 'עוד ' + ptsToNext + ' נקודות לפרס!' : ''}</div>
     </div>
   `;
 
@@ -543,16 +985,16 @@ function render() {
     </div>`;
   }
 
-  // Prizes section
+  // Prizes
   if (state.prizes.length > 0) {
-    html += `<div class="prizes-section"><div class="prizes-title">🎁 הפרסים שלך (${state.prizes.length})</div><div class="prizes-list">`;
+    html += '<div class="prizes-section"><div class="prizes-title">🎁 הפרסים שלך (' + state.prizes.length + ')</div><div class="prizes-list">';
     state.prizes.forEach(p => {
-      html += `<div class="prize-chip claimed">${p.icon} ${p.name}</div>`;
+      html += '<div class="prize-chip claimed">' + p.icon + ' ' + p.name + '</div>';
     });
-    html += `</div></div>`;
+    html += '</div></div>';
   }
 
-  // All done celebration
+  // All done
   if (remaining === 0) {
     html += `
     <div class="all-done">
@@ -565,14 +1007,23 @@ function render() {
   // Remaining units
   const remaining_units = ALL_UNITS.filter(u => !state.completed.includes(u));
   if (remaining_units.length > 0) {
-    html += `<div class="units-title">⚡ יחידות לתרגול (${remaining_units.length})</div>`;
+    html += '<div class="units-title">⚡ יחידות לתרגול (' + remaining_units.length + ')</div>';
     remaining_units.forEach((unit) => {
       const globalIdx = ALL_UNITS.indexOf(unit) + 1;
       const escaped = unit.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const pdfUrl = encodeURIComponent(unit + '.pdf');
+      const hasQuiz = !!UNIT_QUIZ_MAP[unit];
+      const prevScore = state.quizScores[UNIT_QUIZ_MAP[unit]];
+      let scoreTag = '';
+      if (prevScore) {
+        scoreTag = '<br><span style="font-size:0.65em;color:var(--bs-cyan);">🎯 ' + prevScore.score + '/' + prevScore.total + '</span>';
+      }
       html += `
         <div class="unit-card" onclick="confirmComplete('${escaped}')">
           <div class="unit-num">${globalIdx}</div>
-          <div class="unit-name">${unit}</div>
+          <div class="unit-name">${unit}${scoreTag}</div>
+          ${hasQuiz ? '<button class="unit-quiz-btn" onclick="event.stopPropagation(); startQuiz(\'' + escaped + '\');" title="התחל מבחן אונליין">🧠</button>' : ''}
+          <a class="unit-pdf-btn" href="${pdfUrl}" target="_blank" onclick="event.stopPropagation();" title="פתח PDF">📄</a>
           <div class="unit-pts">+${PTS_PER_UNIT}</div>
           <div class="unit-status">👊</div>
         </div>`;
@@ -581,13 +1032,23 @@ function render() {
 
   // Completed units
   if (state.completed.length > 0) {
-    html += `<div class="units-title" style="margin-top:20px">✅ סיימנו! (${state.completed.length})</div>`;
+    html += '<div class="units-title" style="margin-top:20px">✅ סיימנו! (' + state.completed.length + ')</div>';
     state.completed.slice().reverse().forEach((unit) => {
       const date = state.completedDates[unit] || '';
+      const pdfUrl = encodeURIComponent(unit + '.pdf');
+      const hasQuiz = !!UNIT_QUIZ_MAP[unit];
+      const escaped = unit.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const prevScore = state.quizScores[UNIT_QUIZ_MAP[unit]];
+      let scoreTag = '';
+      if (prevScore) {
+        scoreTag = '<br><span style="font-size:0.65em;color:var(--bs-cyan);">🎯 ' + prevScore.score + '/' + prevScore.total + '</span>';
+      }
       html += `
         <div class="unit-card done">
           <div class="unit-num">✓</div>
-          <div class="unit-name">${unit}${date ? '<br><span style="font-size:0.7em;color:#888;">' + date + '</span>' : ''}</div>
+          <div class="unit-name">${unit}${date ? '<br><span style="font-size:0.7em;color:#888;">' + date + '</span>' : ''}${scoreTag}</div>
+          ${hasQuiz ? '<button class="unit-quiz-btn" onclick="event.stopPropagation(); startQuiz(\'' + escaped + '\');" title="תרגל שוב">🧠</button>' : ''}
+          <a class="unit-pdf-btn" href="${pdfUrl}" target="_blank" onclick="event.stopPropagation();" title="פתח PDF">📄</a>
           <div class="unit-pts">+${PTS_PER_UNIT} ✔</div>
           <div class="unit-status">🌟</div>
         </div>`;
@@ -600,7 +1061,6 @@ function render() {
 // ============ CONFIRM DIALOG ============
 function confirmComplete(unitName) {
   if (state.completed.includes(unitName)) return;
-
   const overlay = document.createElement('div');
   overlay.className = 'modal-overlay';
   overlay.innerHTML = `
@@ -610,7 +1070,7 @@ function confirmComplete(unitName) {
       <div class="confirm-unit">${unitName}</div>
       <div class="confirm-text">בטוח שעברת על הכל?<br>אם כן — מגיע לך נקודות!</div>
       <div>
-        <button class="modal-btn" onclick="this.closest('.modal-overlay').remove(); doComplete('${unitName.replace(/'/g, "\\'")}')">!סיימתי 💪</button>
+        <button class="modal-btn" onclick="this.closest('.modal-overlay').remove(); doComplete('${unitName.replace("'", "\\'")}')">!סיימתי 💪</button>
         <button class="modal-btn cancel" onclick="this.closest('.modal-overlay').remove()">עוד לא</button>
       </div>
     </div>
@@ -621,55 +1081,41 @@ function confirmComplete(unitName) {
 // ============ ACTIONS ============
 function doComplete(unitName) {
   if (state.completed.includes(unitName)) return;
-
   state.completed.push(unitName);
   state.completedDates[unitName] = new Date().toISOString().slice(0, 10);
   state.lastAction = { type: 'complete', unit: unitName };
   saveState();
-
-  // Effects
   const enc = ENCOURAGEMENTS[Math.floor(Math.random() * ENCOURAGEMENTS.length)];
   showPointsPopup(enc);
   spawnConfetti();
   vibrate();
-
   const totalPts = getTotalPts();
   const earnedPrizes = Math.floor(totalPts / PTS_PER_PRIZE);
-
   if (earnedPrizes > state.prizes.length) {
     setTimeout(() => {
       const available = PRIZES.filter(p => !state.prizes.some(sp => sp.name === p.name));
       let prize;
-      if (available.length > 0) {
-        prize = available[Math.floor(Math.random() * available.length)];
-      } else {
-        prize = PRIZES[Math.floor(Math.random() * PRIZES.length)];
-      }
+      if (available.length > 0) prize = available[Math.floor(Math.random() * available.length)];
+      else prize = PRIZES[Math.floor(Math.random() * PRIZES.length)];
       state.prizes.push(prize);
       saveState();
       showPrizeModal(prize);
     }, 2000);
   }
-
-  // Server file move (silent fail if no server)
   fetch('/api/complete', {
     method: 'POST', headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({unit: unitName})
   }).catch(() => {});
-
   setTimeout(() => render(), 400);
 }
 
 function adjustBonus(amount) {
   state.bonusPts = Math.max(0, (state.bonusPts || 0) + amount);
   saveState();
-
-  // Check prize changes
   const totalPts = getTotalPts();
   const expectedPrizes = Math.floor(totalPts / PTS_PER_PRIZE);
   while (state.prizes.length > expectedPrizes) state.prizes.pop();
   saveState();
-
   render();
 }
 
@@ -690,7 +1136,6 @@ function undoLast() {
       method: 'POST', headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({unit: action.unit})
     }).catch(() => {});
-
     state.completed = state.completed.filter(u => u !== action.unit);
     delete state.completedDates[action.unit];
     const totalPts = getTotalPts();
@@ -702,9 +1147,7 @@ function undoLast() {
   render();
 }
 
-function resetAll() {
-  showResetConfirm();
-}
+function resetAll() { showResetConfirm(); }
 
 function showResetConfirm() {
   const overlay = document.createElement('div');
@@ -725,7 +1168,7 @@ function showResetConfirm() {
 
 function doReset() {
   fetch('/api/reset', {method:'POST',headers:{'Content-Type':'application/json'},body:'{}'}).catch(()=>{});
-  state = { completed: [], prizes: [], lastAction: null, bonusPts: 0, completedDates: {} };
+  state = { completed: [], prizes: [], lastAction: null, bonusPts: 0, completedDates: {}, quizScores: {} };
   saveState();
   render();
 }
